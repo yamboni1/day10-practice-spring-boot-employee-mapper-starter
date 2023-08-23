@@ -45,8 +45,8 @@ public class CompanyService {
     }
 
     public void update(Long id, Company company) {
-        Optional<Company> optionalCompany = getCompanyRepository().findById(id);
-        optionalCompany.ifPresent(previousCompany -> previousCompany.setName(company.getName()));
+        Company toBeUpdatedCompany = findById(id);
+        toBeUpdatedCompany.setName(company.getName());
     }
 
     public Company create(Company company) {
