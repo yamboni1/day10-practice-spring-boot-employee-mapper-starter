@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class EmployeeControllerTest {
+class EmployeeApiTest {
 
     @Autowired
     private MockMvc mockMvc;
