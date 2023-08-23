@@ -33,8 +33,8 @@ public class CompanyService {
         return getCompanyRepository().getCompanies();
     }
 
-    public List<Company> findByPage(Integer page, Integer size) {
-        return getCompanyRepository().findByPage(page, size);
+    public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
+        return getCompanyRepository().findByPage(pageNumber, pageSize);
     }
 
     public Company findById(Long id) {

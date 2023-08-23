@@ -138,8 +138,8 @@ class EmployeeControllerTest {
         inMemoryEmployeeRepository.insert(employeeLisi);
 
         mockMvc.perform(get("/employees")
-                        .param("page", "1")
-                        .param("size", "2"))
+                        .param("pageNumber", "1")
+                        .param("pageSize", "2"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))

@@ -23,9 +23,9 @@ public class CompanyController {
         return companyService.findAll();
     }
 
-    @GetMapping(params = {"page", "size"})
-    public List<Company> getCompaniesByPage(@RequestParam Integer page, @RequestParam Integer size) {
-        return companyService.findByPage(page, size);
+    @GetMapping(params = {"pageNumber", "pageSize"})
+    public List<Company> getCompaniesByPage(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return companyService.findByPage(pageNumber, pageSize);
     }
 
     @GetMapping("/{id}")

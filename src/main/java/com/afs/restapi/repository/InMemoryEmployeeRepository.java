@@ -53,10 +53,10 @@ public class InMemoryEmployeeRepository {
                 .collect(Collectors.toList());
     }
 
-    public List<Employee> findByPage(Integer page, Integer size) {
+    public List<Employee> findByPage(Integer pageNumber, Integer pageSize) {
         return employees.stream()
-                .skip((long) (page - 1) * size)
-                .limit(size)
+                .skip((long) (pageNumber - 1) * pageSize)
+                .limit(pageSize)
                 .collect(Collectors.toList());
     }
 

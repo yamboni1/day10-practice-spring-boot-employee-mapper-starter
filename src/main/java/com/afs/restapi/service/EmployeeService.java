@@ -47,8 +47,8 @@ public class EmployeeService {
         return getEmployeeRepository().insert(employee);
     }
 
-    public List<Employee> findByPage(Integer page, Integer size) {
-        return getEmployeeRepository().findByPage(page, size);
+    public List<Employee> findByPage(Integer pageNumber, Integer pageSize) {
+        return getEmployeeRepository().findByPage(pageNumber, pageSize);
     }
 
     public void delete(Long id) {

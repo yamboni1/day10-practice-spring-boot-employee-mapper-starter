@@ -29,10 +29,10 @@ public class InMemoryCompanyRepository {
         return company;
     }
 
-    public List<Company> findByPage(Integer page, Integer size) {
+    public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
         return companies.stream()
-                .skip((long) (page - 1) * size)
-                .limit(size)
+                .skip((long) (pageNumber - 1) * pageSize)
+                .limit(pageSize)
                 .collect(Collectors.toList());
     }
 

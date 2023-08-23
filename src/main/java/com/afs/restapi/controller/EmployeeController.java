@@ -50,9 +50,9 @@ public class EmployeeController {
         return employeeService.create(employee);
     }
 
-    @GetMapping(params = {"page", "size"})
-    public List<Employee> findEmployeesByPage(@RequestParam Integer page, @RequestParam Integer size) {
-        return employeeService.findByPage(page, size);
+    @GetMapping(params = {"pageNumber", "pageSize"})
+    public List<Employee> findEmployeesByPage(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
+        return employeeService.findByPage(pageNumber, pageSize);
     }
 
 }
