@@ -58,7 +58,7 @@ class EmployeeControllerTest {
 
     @Test
     void should_create_employee() throws Exception {
-        Employee employee = getEmployeeZhangsan();
+        Employee employee = getEmployeeBob();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String employeeRequest = objectMapper.writeValueAsString(employee);
@@ -75,7 +75,7 @@ class EmployeeControllerTest {
 
     @Test
     void should_find_employees() throws Exception {
-        Employee employee = getEmployeeZhangsan();
+        Employee employee = getEmployeeBob();
         inMemoryEmployeeRepository.insert(employee);
 
         mockMvc.perform(get("/employees"))
@@ -90,7 +90,7 @@ class EmployeeControllerTest {
 
     @Test
     void should_find_employee_by_id() throws Exception {
-        Employee employee = getEmployeeZhangsan();
+        Employee employee = getEmployeeBob();
         inMemoryEmployeeRepository.insert(employee);
 
         mockMvc.perform(get("/employees/{id}", 1))
@@ -104,7 +104,7 @@ class EmployeeControllerTest {
 
     @Test
     void should_delete_employee_by_id() throws Exception {
-        Employee employee = getEmployeeZhangsan();
+        Employee employee = getEmployeeBob();
         inMemoryEmployeeRepository.insert(employee);
 
         mockMvc.perform(delete("/employees/{id}", 1))
@@ -115,7 +115,7 @@ class EmployeeControllerTest {
 
     @Test
     void should_find_employee_by_gender() throws Exception {
-        Employee employee = getEmployeeZhangsan();
+        Employee employee = getEmployeeBob();
         inMemoryEmployeeRepository.insert(employee);
 
         mockMvc.perform(get("/employees?gender={0}", "Male"))
@@ -130,9 +130,9 @@ class EmployeeControllerTest {
 
     @Test
     void should_find_employees_by_page() throws Exception {
-        Employee employeeZhangsan = getEmployeeZhangsan();
+        Employee employeeZhangsan = getEmployeeBob();
         Employee employeeSusan = getEmployeeSusan();
-        Employee employeeLisi = getEmployeeLisi();
+        Employee employeeLisi = getEmployeeLily();
         inMemoryEmployeeRepository.insert(employeeZhangsan);
         inMemoryEmployeeRepository.insert(employeeSusan);
         inMemoryEmployeeRepository.insert(employeeLisi);
@@ -154,9 +154,9 @@ class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(employeeSusan.getSalary()));
     }
 
-    private static Employee getEmployeeZhangsan() {
+    private static Employee getEmployeeBob() {
         Employee employee = new Employee();
-        employee.setName("zhangsan");
+        employee.setName("Bob");
         employee.setAge(22);
         employee.setGender("Male");
         employee.setSalary(10000);
@@ -165,16 +165,16 @@ class EmployeeControllerTest {
 
     private static Employee getEmployeeSusan() {
         Employee employee = new Employee();
-        employee.setName("susan");
+        employee.setName("Susan");
         employee.setAge(23);
-        employee.setGender("Male");
+        employee.setGender("Female");
         employee.setSalary(11000);
         return employee;
     }
 
-    private static Employee getEmployeeLisi() {
+    private static Employee getEmployeeLily() {
         Employee employee = new Employee();
-        employee.setName("lisi");
+        employee.setName("Lily");
         employee.setAge(24);
         employee.setGender("Female");
         employee.setSalary(12000);

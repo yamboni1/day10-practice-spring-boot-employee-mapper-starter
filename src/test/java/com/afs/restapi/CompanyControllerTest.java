@@ -156,7 +156,7 @@ class CompanyControllerTest {
 
     private static Employee getEmployee(Company company) {
         Employee employee = new Employee();
-        employee.setName("zhangsan");
+        employee.setName("Bob");
         employee.setAge(22);
         employee.setGender("Male");
         employee.setSalary(10000);
