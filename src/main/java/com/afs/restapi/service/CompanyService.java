@@ -7,9 +7,12 @@ import com.afs.restapi.repository.EmployeeJpaRepository;
 import com.afs.restapi.repository.InMemoryCompanyRepository;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.InMemoryEmployeeRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
@@ -43,7 +46,8 @@ public class CompanyService {
     }
 
     public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
-        return getCompanyRepository().findByPage(pageNumber, pageSize);
+        return companyJpaRepository.findAll(PageRequest.of(pageNumber-1, pageSize)).stream()
+                .collect(Collectors.toList());
     }
 
     public void update(Long id, Company company) {

@@ -120,23 +120,19 @@ class CompanyApiTest {
 
     @Test
     void should_find_companies_by_page() throws Exception {
-        Company company1 = getCompanyOOCL();
-        Company company2 = getCompanyThoughtWorks();
-        Company company3 = getCompanyGoogle();
-        inMemoryCompanyRepository.insert(company1);
-        inMemoryCompanyRepository.insert(company2);
-        inMemoryCompanyRepository.insert(company3);
+        Company oocl = companyJpaRepository.save(getCompanyOOCL());
+        Company thoughtworks = companyJpaRepository.save(getCompanyThoughtWorks());
+        Company google = companyJpaRepository.save(getCompanyGoogle());
 
         mockMvc.perform(get("/companies")
                         .param("pageNumber", "1")
                         .param("pageSize", "2"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(company1.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(company2.getName()))
-        ;
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(oocl.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(oocl.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(thoughtworks.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(thoughtworks.getName()));
     }
 
     @Test
