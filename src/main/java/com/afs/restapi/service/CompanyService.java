@@ -3,6 +3,7 @@ package com.afs.restapi.service;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.exception.CompanyNotFoundException;
 import com.afs.restapi.repository.CompanyJpaRepository;
+import com.afs.restapi.repository.EmployeeJpaRepository;
 import com.afs.restapi.repository.InMemoryCompanyRepository;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.InMemoryEmployeeRepository;
@@ -16,11 +17,13 @@ public class CompanyService {
     private final InMemoryCompanyRepository inMemoryCompanyRepository;
     private final InMemoryEmployeeRepository inMemoryEmployeeRepository;
     private final CompanyJpaRepository companyJpaRepository;
+    private final EmployeeJpaRepository employeeJpaRepository;
 
-    public CompanyService(InMemoryCompanyRepository inMemoryCompanyRepository, InMemoryEmployeeRepository inMemoryEmployeeRepository, CompanyJpaRepository companyJpaRepository) {
+    public CompanyService(InMemoryCompanyRepository inMemoryCompanyRepository, InMemoryEmployeeRepository inMemoryEmployeeRepository, CompanyJpaRepository companyJpaRepository, EmployeeJpaRepository employeeJpaRepository) {
         this.inMemoryCompanyRepository = inMemoryCompanyRepository;
         this.inMemoryEmployeeRepository = inMemoryEmployeeRepository;
         this.companyJpaRepository = companyJpaRepository;
+        this.employeeJpaRepository = employeeJpaRepository;
     }
 
     public InMemoryCompanyRepository getCompanyRepository() {
@@ -35,15 +38,15 @@ public class CompanyService {
         return companyJpaRepository.findAll();
     }
 
-    public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
-        return getCompanyRepository().findByPage(pageNumber, pageSize);
-    }
-
     public Company findById(Long id) {
-        Company company = getCompanyRepository().findById(id).orElseThrow(CompanyNotFoundException::new);
-        List<Employee> employees = getEmployeeRepository().findByCompanyId(company.getId());
+        Company company = companyJpaRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+        List<Employee> employees = employeeJpaRepository.findAllByCompanyId(company.getId());
         company.setEmployees(employees);
         return company;
+    }
+
+    public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
+        return getCompanyRepository().findByPage(pageNumber, pageSize);
     }
 
     public void update(Long id, Company company) {
