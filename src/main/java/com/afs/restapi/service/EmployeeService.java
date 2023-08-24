@@ -3,10 +3,8 @@ package com.afs.restapi.service;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.exception.EmployeeNotFoundException;
 import com.afs.restapi.repository.EmployeeJpaRepository;
-import com.afs.restapi.repository.InMemoryEmployeeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,17 +12,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
-
-    private final InMemoryEmployeeRepository inMemoryEmployeeRepository;
     private final EmployeeJpaRepository employeeJpaRepository;
 
-    public EmployeeService(InMemoryEmployeeRepository inMemoryEmployeeRepository, EmployeeJpaRepository employeeJpaRepository) {
-        this.inMemoryEmployeeRepository = inMemoryEmployeeRepository;
+    public EmployeeService(EmployeeJpaRepository employeeJpaRepository) {
         this.employeeJpaRepository = employeeJpaRepository;
-    }
-
-    public InMemoryEmployeeRepository getEmployeeRepository() {
-        return inMemoryEmployeeRepository;
     }
 
     public List<Employee> findAll() {
