@@ -47,7 +47,7 @@ class CompanyApiTest {
 
     @Test
     void should_find_companies() throws Exception {
-        Company company = companyJpaRepository.save( getCompany1());
+        Company company = companyJpaRepository.save( getCompanyOOCL());
 
         mockMvc.perform(get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
@@ -89,7 +89,7 @@ class CompanyApiTest {
 
     @Test
     void should_create_employee() throws Exception {
-        Company company = getCompany1();
+        Company company = getCompanyOOCL();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String companyRequest = objectMapper.writeValueAsString(company);
@@ -103,9 +103,9 @@ class CompanyApiTest {
 
     @Test
     void should_find_companies_by_page() throws Exception {
-        Company company1 = getCompany1();
-        Company company2 = getCompany2();
-        Company company3 = getCompany3();
+        Company company1 = getCompanyOOCL();
+        Company company2 = getCompanyThoughtWorks();
+        Company company3 = getCompanyGoogle();
         inMemoryCompanyRepository.insert(company1);
         inMemoryCompanyRepository.insert(company2);
         inMemoryCompanyRepository.insert(company3);
@@ -124,7 +124,7 @@ class CompanyApiTest {
 
     @Test
     void should_find_company_by_id() throws Exception {
-        Company company = getCompany1();
+        Company company = getCompanyOOCL();
         inMemoryCompanyRepository.insert(company);
         Employee employee = getEmployee(company);
         inMemoryEmployeeRepository.insert(employee);
@@ -143,7 +143,7 @@ class CompanyApiTest {
 
     @Test
     void should_find_employees_by_companies() throws Exception {
-        Company company = getCompany1();
+        Company company = getCompanyOOCL();
         inMemoryCompanyRepository.insert(company);
         Employee employee = getEmployee(company);
         inMemoryEmployeeRepository.insert(employee);
@@ -169,21 +169,21 @@ class CompanyApiTest {
     }
 
 
-    private static Company getCompany1() {
+    private static Company getCompanyOOCL() {
         Company company = new Company();
-        company.setName("ABC");
+        company.setName("OOCL");
         return company;
     }
 
-    private static Company getCompany2() {
+    private static Company getCompanyThoughtWorks() {
         Company company = new Company();
-        company.setName("DEF");
+        company.setName("Thoughtworks");
         return company;
     }
 
-    private static Company getCompany3() {
+    private static Company getCompanyGoogle() {
         Company company = new Company();
-        company.setName("XYZ");
+        company.setName("Google");
         return company;
     }
 }
