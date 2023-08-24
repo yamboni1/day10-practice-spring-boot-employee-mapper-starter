@@ -4,9 +4,13 @@ import com.afs.restapi.entity.Employee;
 import com.afs.restapi.exception.EmployeeNotFoundException;
 import com.afs.restapi.repository.EmployeeJpaRepository;
 import com.afs.restapi.repository.InMemoryEmployeeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -51,7 +55,8 @@ public class EmployeeService {
     }
 
     public List<Employee> findByPage(Integer pageNumber, Integer pageSize) {
-        return getEmployeeRepository().findByPage(pageNumber, pageSize);
+        Page<Employee> employeesInThePage = employeeJpaRepository.findAll(PageRequest.of(pageNumber-1, pageSize));
+        return employeesInThePage.stream().collect(Collectors.toList());
     }
 
     public void delete(Long id) {

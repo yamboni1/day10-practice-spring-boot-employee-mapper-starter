@@ -121,6 +121,30 @@ class EmployeeApiTest {
     }
 
     @Test
+    void should_find_employees_by_page() throws Exception {
+        Employee bob = getEmployeeBob();
+        Employee susan = getEmployeeSusan();
+        Employee lily = getEmployeeLily();
+        employeeJpaRepository.saveAll(List.of(bob, susan, lily));
+
+        mockMvc.perform(get("/employees")
+                        .param("pageNumber", "1")
+                        .param("pageSize", "2"))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(bob.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(bob.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(bob.getSalary()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(susan.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(susan.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value(susan.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(susan.getSalary()));
+    }
+
+    @Test
     void should_delete_employee_by_id() throws Exception {
         Employee employee = getEmployeeBob();
         inMemoryEmployeeRepository.insert(employee);
@@ -129,32 +153,6 @@ class EmployeeApiTest {
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
         assertTrue(inMemoryEmployeeRepository.findById(1L).isEmpty());
-    }
-
-    @Test
-    void should_find_employees_by_page() throws Exception {
-        Employee employeeZhangsan = getEmployeeBob();
-        Employee employeeSusan = getEmployeeSusan();
-        Employee employeeLisi = getEmployeeLily();
-        inMemoryEmployeeRepository.insert(employeeZhangsan);
-        inMemoryEmployeeRepository.insert(employeeSusan);
-        inMemoryEmployeeRepository.insert(employeeLisi);
-
-        mockMvc.perform(get("/employees")
-                        .param("pageNumber", "1")
-                        .param("pageSize", "2"))
-                .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employeeZhangsan.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employeeZhangsan.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employeeZhangsan.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employeeZhangsan.getSalary()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(employeeSusan.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(employeeSusan.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value(employeeSusan.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(employeeSusan.getSalary()));
     }
 
     private static Employee getEmployeeBob() {
