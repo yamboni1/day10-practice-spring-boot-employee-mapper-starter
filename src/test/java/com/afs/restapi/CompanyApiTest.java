@@ -4,8 +4,6 @@ import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyJpaRepository;
 import com.afs.restapi.repository.EmployeeJpaRepository;
-import com.afs.restapi.repository.InMemoryCompanyRepository;
-import com.afs.restapi.repository.InMemoryEmployeeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,16 +24,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 @AutoConfigureMockMvc
 class CompanyApiTest {
-
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private InMemoryCompanyRepository inMemoryCompanyRepository;
-
-    @Autowired
-    private InMemoryEmployeeRepository inMemoryEmployeeRepository;
-
     @Autowired
     private CompanyJpaRepository companyJpaRepository;
     @Autowired
@@ -45,13 +35,11 @@ class CompanyApiTest {
     void setUp() {
         companyJpaRepository.deleteAll();
         employeeJpaRepository.deleteAll();
-        inMemoryCompanyRepository.clearAll();
-        inMemoryEmployeeRepository.clearAll();
     }
 
     @Test
     void should_find_companies() throws Exception {
-        Company company = companyJpaRepository.save( getCompanyOOCL());
+        Company company = companyJpaRepository.save(getCompanyOOCL());
 
         mockMvc.perform(get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
@@ -80,10 +68,10 @@ class CompanyApiTest {
     @Test
     void should_update_company_name() throws Exception {
         Company previousCompany = companyJpaRepository.save(new Company(null, "Facebook"));
-        Company companyUpdateRequest = new Company(1L, "Meta");
+        Company companyUpdateRequest = new Company(previousCompany.getId(), "Meta");
         ObjectMapper objectMapper = new ObjectMapper();
         String updatedEmployeeJson = objectMapper.writeValueAsString(companyUpdateRequest);
-        mockMvc.perform(put("/companies/{id}", 1)
+        mockMvc.perform(put("/companies/{id}", previousCompany.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedEmployeeJson))
                 .andExpect(MockMvcResultMatchers.status().is(204));
@@ -137,12 +125,10 @@ class CompanyApiTest {
 
     @Test
     void should_find_employees_by_companies() throws Exception {
-        Company company = getCompanyOOCL();
-        inMemoryCompanyRepository.insert(company);
-        Employee employee = getEmployee(company);
-        inMemoryEmployeeRepository.insert(employee);
+        Company oocl = companyJpaRepository.save(getCompanyOOCL());
+        Employee employee = employeeJpaRepository.save(getEmployee(oocl));
 
-        mockMvc.perform(get("/companies/{companyId}/employees", 1L))
+        mockMvc.perform(get("/companies/{companyId}/employees", oocl.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee.getId()))
