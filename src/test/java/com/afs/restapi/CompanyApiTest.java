@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -78,8 +79,8 @@ class CompanyApiTest {
 
     @Test
     void should_update_company_name() throws Exception {
-        Company previousCompany = companyJpaRepository.save(new Company(null, "abc"));
-        Company companyUpdateRequest = new Company(1L, "xyz");
+        Company previousCompany = companyJpaRepository.save(new Company(null, "Facebook"));
+        Company companyUpdateRequest = new Company(1L, "Meta");
         ObjectMapper objectMapper = new ObjectMapper();
         String updatedEmployeeJson = objectMapper.writeValueAsString(companyUpdateRequest);
         mockMvc.perform(put("/companies/{id}", 1)
@@ -96,8 +97,7 @@ class CompanyApiTest {
 
     @Test
     void should_delete_company_name() throws Exception {
-        Company company = companyJpaRepository.save(new Company(1L, "abc"));
-
+        Company company = companyJpaRepository.save(getCompanyGoogle());
         mockMvc.perform(delete("/companies/{id}", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
@@ -114,7 +114,7 @@ class CompanyApiTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(companyRequest))
                 .andExpect(MockMvcResultMatchers.status().is(201))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(notNullValue()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(company.getName()));
     }
 

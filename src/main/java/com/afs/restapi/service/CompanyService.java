@@ -53,7 +53,7 @@ public class CompanyService {
     }
 
     public Company create(Company company) {
-        return getCompanyRepository().insert(company);
+        return companyJpaRepository.save(company);
     }
 
     public List<Employee> findEmployeesByCompanyId(Long id) {
