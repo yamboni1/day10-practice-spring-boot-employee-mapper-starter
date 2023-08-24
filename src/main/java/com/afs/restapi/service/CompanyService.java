@@ -1,14 +1,11 @@
 package com.afs.restapi.service;
 
 import com.afs.restapi.entity.Company;
-import com.afs.restapi.exception.CompanyNotFoundException;
-import com.afs.restapi.repository.CompanyJpaRepository;
-import com.afs.restapi.repository.EmployeeJpaRepository;
-import com.afs.restapi.repository.InMemoryCompanyRepository;
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.repository.InMemoryEmployeeRepository;
+import com.afs.restapi.exception.CompanyNotFoundException;
+import com.afs.restapi.repository.CompanyRepository;
+import com.afs.restapi.repository.EmployeeRepository;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,25 +13,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
+    private final CompanyRepository companyJpaRepository;
+    private final EmployeeRepository employeeRepository;
 
-    private final InMemoryCompanyRepository inMemoryCompanyRepository;
-    private final InMemoryEmployeeRepository inMemoryEmployeeRepository;
-    private final CompanyJpaRepository companyJpaRepository;
-    private final EmployeeJpaRepository employeeJpaRepository;
-
-    public CompanyService(InMemoryCompanyRepository inMemoryCompanyRepository, InMemoryEmployeeRepository inMemoryEmployeeRepository, CompanyJpaRepository companyJpaRepository, EmployeeJpaRepository employeeJpaRepository) {
-        this.inMemoryCompanyRepository = inMemoryCompanyRepository;
-        this.inMemoryEmployeeRepository = inMemoryEmployeeRepository;
+    public CompanyService(CompanyRepository companyJpaRepository, EmployeeRepository employeeRepository) {
         this.companyJpaRepository = companyJpaRepository;
-        this.employeeJpaRepository = employeeJpaRepository;
-    }
-
-    public InMemoryCompanyRepository getCompanyRepository() {
-        return inMemoryCompanyRepository;
-    }
-
-    public InMemoryEmployeeRepository getEmployeeRepository() {
-        return inMemoryEmployeeRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     public List<Company> findAll() {
@@ -61,7 +45,7 @@ public class CompanyService {
     }
 
     public List<Employee> findEmployeesByCompanyId(Long id) {
-        return getEmployeeRepository().findByCompanyId(id);
+        return employeeRepository.findAllByCompanyId(id);
     }
 
     public void delete(Long id) {

@@ -2,8 +2,8 @@ package com.afs.restapi;
 
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.repository.CompanyJpaRepository;
-import com.afs.restapi.repository.EmployeeJpaRepository;
+import com.afs.restapi.repository.CompanyRepository;
+import com.afs.restapi.repository.EmployeeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +27,14 @@ class CompanyApiTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private CompanyJpaRepository companyJpaRepository;
+    private CompanyRepository companyJpaRepository;
     @Autowired
-    private EmployeeJpaRepository employeeJpaRepository;
+    private EmployeeRepository employeeRepository;
 
     @BeforeEach
     void setUp() {
         companyJpaRepository.deleteAll();
-        employeeJpaRepository.deleteAll();
+        employeeRepository.deleteAll();
     }
 
     @Test
@@ -51,7 +51,7 @@ class CompanyApiTest {
     @Test
     void should_find_company_by_id() throws Exception {
         Company company = companyJpaRepository.save(getCompanyOOCL());
-        Employee employee = employeeJpaRepository.save(getEmployee(company));
+        Employee employee = employeeRepository.save(getEmployee(company));
 
         mockMvc.perform(get("/companies/{id}", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
@@ -126,7 +126,7 @@ class CompanyApiTest {
     @Test
     void should_find_employees_by_companies() throws Exception {
         Company oocl = companyJpaRepository.save(getCompanyOOCL());
-        Employee employee = employeeJpaRepository.save(getEmployee(oocl));
+        Employee employee = employeeRepository.save(getEmployee(oocl));
 
         mockMvc.perform(get("/companies/{companyId}/employees", oocl.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
