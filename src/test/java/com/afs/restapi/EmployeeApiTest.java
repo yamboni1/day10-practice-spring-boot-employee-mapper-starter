@@ -1,6 +1,7 @@
 package com.afs.restapi;
 
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.repository.EmployeeJpaRepository;
 import com.afs.restapi.repository.InMemoryEmployeeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -24,13 +25,29 @@ class EmployeeApiTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private InMemoryEmployeeRepository inMemoryEmployeeRepository;
+    @Autowired
+    private EmployeeJpaRepository employeeJpaRepository;
 
     @BeforeEach
     void setUp() {
         inMemoryEmployeeRepository.clearAll();
+        employeeJpaRepository.deleteAll();
+    }
+    @Test
+    void should_find_employees() throws Exception {
+        Employee employee = getEmployeeBob();
+        employeeJpaRepository.save(employee);
+
+        mockMvc.perform(get("/employees"))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employee.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employee.getGender()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employee.getSalary()));
     }
 
     @Test
@@ -71,21 +88,6 @@ class EmployeeApiTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(employee.getAge()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(employee.getGender()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(employee.getSalary()));
-    }
-
-    @Test
-    void should_find_employees() throws Exception {
-        Employee employee = getEmployeeBob();
-        inMemoryEmployeeRepository.insert(employee);
-
-        mockMvc.perform(get("/employees"))
-                .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employee.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employee.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employee.getSalary()));
     }
 
     @Test
