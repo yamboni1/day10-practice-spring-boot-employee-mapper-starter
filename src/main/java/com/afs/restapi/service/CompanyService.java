@@ -2,23 +2,25 @@ package com.afs.restapi.service;
 
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.exception.CompanyNotFoundException;
+import com.afs.restapi.repository.CompanyJpaRepository;
 import com.afs.restapi.repository.InMemoryCompanyRepository;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.InMemoryEmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CompanyService {
 
     private final InMemoryCompanyRepository inMemoryCompanyRepository;
     private final InMemoryEmployeeRepository inMemoryEmployeeRepository;
+    private final CompanyJpaRepository companyJpaRepository;
 
-    public CompanyService(InMemoryCompanyRepository inMemoryCompanyRepository, InMemoryEmployeeRepository inMemoryEmployeeRepository) {
+    public CompanyService(InMemoryCompanyRepository inMemoryCompanyRepository, InMemoryEmployeeRepository inMemoryEmployeeRepository, CompanyJpaRepository companyJpaRepository) {
         this.inMemoryCompanyRepository = inMemoryCompanyRepository;
         this.inMemoryEmployeeRepository = inMemoryEmployeeRepository;
+        this.companyJpaRepository = companyJpaRepository;
     }
 
     public InMemoryCompanyRepository getCompanyRepository() {
@@ -30,7 +32,7 @@ public class CompanyService {
     }
 
     public List<Company> findAll() {
-        return getCompanyRepository().getCompanies();
+        return companyJpaRepository.findAll();
     }
 
     public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
