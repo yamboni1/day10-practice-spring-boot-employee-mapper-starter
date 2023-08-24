@@ -60,6 +60,6 @@ public class EmployeeService {
     }
 
     public void delete(Long id) {
-        inMemoryEmployeeRepository.deleteById(id);
+        employeeJpaRepository.deleteById(id);
     }
 }
