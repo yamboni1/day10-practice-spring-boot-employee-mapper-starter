@@ -47,7 +47,7 @@ public class EmployeeService {
     }
 
     public Employee create(Employee employee) {
-        return getEmployeeRepository().insert(employee);
+        return employeeJpaRepository.save(employee);
     }
 
     public List<Employee> findByPage(Integer pageNumber, Integer pageSize) {
