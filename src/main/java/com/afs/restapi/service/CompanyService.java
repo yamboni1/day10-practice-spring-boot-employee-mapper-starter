@@ -61,6 +61,6 @@ public class CompanyService {
     }
 
     public void delete(Long id) {
-        inMemoryCompanyRepository.deleteById(id);
+        companyJpaRepository.deleteById(id);
     }
 }
