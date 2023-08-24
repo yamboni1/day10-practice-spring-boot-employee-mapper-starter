@@ -13,35 +13,37 @@ import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
-    private final CompanyRepository companyJpaRepository;
+    private final CompanyRepository companyRepository;
     private final EmployeeRepository employeeRepository;
 
-    public CompanyService(CompanyRepository companyJpaRepository, EmployeeRepository employeeRepository) {
-        this.companyJpaRepository = companyJpaRepository;
+    public CompanyService(CompanyRepository companyRepository, EmployeeRepository employeeRepository) {
+        this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
     }
 
     public List<Company> findAll() {
-        return companyJpaRepository.findAll();
+        return companyRepository.findAll();
     }
 
     public Company findById(Long id) {
-        return companyJpaRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+        return companyRepository.findById(id)
+                .orElseThrow(CompanyNotFoundException::new);
     }
 
     public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
-        return companyJpaRepository.findAll(PageRequest.of(pageNumber-1, pageSize)).stream()
+        return companyRepository.findAll(PageRequest.of(pageNumber-1, pageSize)).stream()
                 .collect(Collectors.toList());
     }
 
     public void update(Long id, Company company) {
-        Company toBeUpdatedCompany = findById(id);
+        Company toBeUpdatedCompany = companyRepository.findById(id)
+                .orElseThrow(CompanyNotFoundException::new);
         toBeUpdatedCompany.setName(company.getName());
-        companyJpaRepository.save(toBeUpdatedCompany);
+        companyRepository.save(toBeUpdatedCompany);
     }
 
     public Company create(Company company) {
-        return companyJpaRepository.save(company);
+        return companyRepository.save(company);
     }
 
     public List<Employee> findEmployeesByCompanyId(Long id) {
@@ -49,6 +51,6 @@ public class CompanyService {
     }
 
     public void delete(Long id) {
-        companyJpaRepository.deleteById(id);
+        companyRepository.deleteById(id);
     }
 }

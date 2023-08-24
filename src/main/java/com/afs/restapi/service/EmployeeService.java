@@ -28,7 +28,8 @@ public class EmployeeService {
     }
 
     public void update(Long id, Employee employee) {
-        Employee toBeUpdatedEmployee = findById(id);
+        Employee toBeUpdatedEmployee = employeeRepository.findById(id)
+                .orElseThrow(EmployeeNotFoundException::new);
         if (employee.getSalary() != null) {
             toBeUpdatedEmployee.setSalary(employee.getSalary());
         }

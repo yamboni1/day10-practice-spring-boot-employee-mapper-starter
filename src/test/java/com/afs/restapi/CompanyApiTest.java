@@ -27,19 +27,19 @@ class CompanyApiTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private CompanyRepository companyJpaRepository;
+    private CompanyRepository companyRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
 
     @BeforeEach
     void setUp() {
-        companyJpaRepository.deleteAll();
+        companyRepository.deleteAll();
         employeeRepository.deleteAll();
     }
 
     @Test
     void should_find_companies() throws Exception {
-        Company company = companyJpaRepository.save(getCompanyOOCL());
+        Company company = companyRepository.save(getCompanyOOCL());
 
         mockMvc.perform(get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
@@ -50,7 +50,7 @@ class CompanyApiTest {
 
     @Test
     void should_find_company_by_id() throws Exception {
-        Company company = companyJpaRepository.save(getCompanyOOCL());
+        Company company = companyRepository.save(getCompanyOOCL());
         Employee employee = employeeRepository.save(getEmployee(company));
 
         mockMvc.perform(get("/companies/{id}", company.getId()))
@@ -67,7 +67,7 @@ class CompanyApiTest {
 
     @Test
     void should_update_company_name() throws Exception {
-        Company previousCompany = companyJpaRepository.save(new Company(null, "Facebook"));
+        Company previousCompany = companyRepository.save(new Company(null, "Facebook"));
         Company companyUpdateRequest = new Company(previousCompany.getId(), "Meta");
         ObjectMapper objectMapper = new ObjectMapper();
         String updatedEmployeeJson = objectMapper.writeValueAsString(companyUpdateRequest);
@@ -76,7 +76,7 @@ class CompanyApiTest {
                         .content(updatedEmployeeJson))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
-        Optional<Company> optionalCompany = companyJpaRepository.findById(previousCompany.getId());
+        Optional<Company> optionalCompany = companyRepository.findById(previousCompany.getId());
         assertTrue(optionalCompany.isPresent());
         Company updatedCompany = optionalCompany.get();
         Assertions.assertEquals(previousCompany.getId(), updatedCompany.getId());
@@ -85,15 +85,15 @@ class CompanyApiTest {
 
     @Test
     void should_delete_company_name() throws Exception {
-        Company company = companyJpaRepository.save(getCompanyGoogle());
+        Company company = companyRepository.save(getCompanyGoogle());
         mockMvc.perform(delete("/companies/{id}", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
-        assertTrue(companyJpaRepository.findById(company.getId()).isEmpty());
+        assertTrue(companyRepository.findById(company.getId()).isEmpty());
     }
 
     @Test
-    void should_create_employee() throws Exception {
+    void should_create_company() throws Exception {
         Company company = getCompanyOOCL();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -108,9 +108,9 @@ class CompanyApiTest {
 
     @Test
     void should_find_companies_by_page() throws Exception {
-        Company oocl = companyJpaRepository.save(getCompanyOOCL());
-        Company thoughtworks = companyJpaRepository.save(getCompanyThoughtWorks());
-        Company google = companyJpaRepository.save(getCompanyGoogle());
+        Company oocl = companyRepository.save(getCompanyOOCL());
+        Company thoughtworks = companyRepository.save(getCompanyThoughtWorks());
+        Company google = companyRepository.save(getCompanyGoogle());
 
         mockMvc.perform(get("/companies")
                         .param("pageNumber", "1")
@@ -125,7 +125,7 @@ class CompanyApiTest {
 
     @Test
     void should_find_employees_by_companies() throws Exception {
-        Company oocl = companyJpaRepository.save(getCompanyOOCL());
+        Company oocl = companyRepository.save(getCompanyOOCL());
         Employee employee = employeeRepository.save(getEmployee(oocl));
 
         mockMvc.perform(get("/companies/{companyId}/employees", oocl.getId()))
