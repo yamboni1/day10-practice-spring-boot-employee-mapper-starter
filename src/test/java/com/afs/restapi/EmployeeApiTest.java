@@ -109,7 +109,7 @@ class EmployeeApiTest {
     @Test
     void should_find_employee_by_id() throws Exception {
         Employee employee = getEmployeeBob();
-        inMemoryEmployeeRepository.insert(employee);
+        employeeJpaRepository.save(employee);
 
         mockMvc.perform(get("/employees/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().is(200))

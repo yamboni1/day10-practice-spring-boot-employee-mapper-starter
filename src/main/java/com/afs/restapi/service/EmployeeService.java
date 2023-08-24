@@ -28,7 +28,7 @@ public class EmployeeService {
     }
 
     public Employee findById(Long id) {
-        return getEmployeeRepository().findById(id)
+        return employeeJpaRepository.findById(id)
                 .orElseThrow(EmployeeNotFoundException::new);
     }
 
