@@ -39,10 +39,7 @@ public class CompanyService {
     }
 
     public Company findById(Long id) {
-        Company company = companyJpaRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
-        List<Employee> employees = employeeJpaRepository.findAllByCompanyId(company.getId());
-        company.setEmployees(employees);
-        return company;
+        return companyJpaRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 
     public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
@@ -52,6 +49,7 @@ public class CompanyService {
     public void update(Long id, Company company) {
         Company toBeUpdatedCompany = findById(id);
         toBeUpdatedCompany.setName(company.getName());
+        companyJpaRepository.save(toBeUpdatedCompany);
     }
 
     public Company create(Company company) {
