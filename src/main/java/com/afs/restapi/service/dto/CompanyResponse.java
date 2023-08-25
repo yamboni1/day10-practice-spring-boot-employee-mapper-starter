@@ -4,7 +4,7 @@ public class CompanyResponse {
 
     private Long id;
     private String name;
-    private Integer employeeCount;
+    private Integer employeesCount;
 
 
 
@@ -24,21 +24,21 @@ public class CompanyResponse {
         this.name = name;
     }
 
-    public Integer getEmployeeCount() {
-        return employeeCount;
+    public Integer getEmployeesCount() {
+        return employeesCount;
     }
 
-    public void setEmployeeCount(Integer employeeCount) {
-        this.employeeCount = employeeCount;
+    public void setEmployeesCount(Integer employeesCount) {
+        this.employeesCount = employeesCount;
     }
     public CompanyResponse(){
 
     }
 
 
-    public CompanyResponse(Long id, String name, Integer employeeCount) {
+    public CompanyResponse(Long id, String name, Integer employeesCount) {
         this.id = id;
         this.name = name;
-        this.employeeCount = employeeCount;
+        this.employeesCount = employeesCount;
     }
 }
