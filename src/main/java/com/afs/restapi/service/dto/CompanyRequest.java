@@ -10,9 +10,10 @@ public class CompanyRequest {
     public String getName() {
         return name;
     }
+    public CompanyRequest(){}
 
     public CompanyRequest(String name) {
         this.name = name;
     }
-    public CompanyRequest(){}
+
 }
