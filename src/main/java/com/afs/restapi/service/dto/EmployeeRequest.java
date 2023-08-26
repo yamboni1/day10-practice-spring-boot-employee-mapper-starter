@@ -3,6 +3,7 @@ package com.afs.restapi.service.dto;
 public class EmployeeRequest {
     private String name;
 
+    private Long id;
 
     private Integer age;
     private String gender;
@@ -52,8 +53,13 @@ public class EmployeeRequest {
     public Long getCompanyId() {
         return companyId;
     }
+    public Long getId() {
+        return id;
+    }
 
-
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
