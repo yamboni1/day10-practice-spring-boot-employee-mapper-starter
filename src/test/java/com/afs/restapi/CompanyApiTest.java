@@ -5,6 +5,11 @@ import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.service.dto.CompanyRequest;
+import com.afs.restapi.service.dto.CompanyResponse;
+import com.afs.restapi.service.dto.EmployeeRequest;
+import com.afs.restapi.service.dto.EmployeeResponse;
+import com.afs.restapi.service.mapper.CompanyMapper;
+import com.afs.restapi.service.mapper.EmployeeMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,19 +56,25 @@ class CompanyApiTest {
 
     @Test
     void should_find_company_by_id() throws Exception {
-        Company company = companyRepository.save(getCompanyOOCL());
-        Employee employee = employeeRepository.save(getEmployee(company));
+        CompanyRequest companyRequest = new CompanyRequest(getCompanyOOCL());
+        Company company = CompanyMapper.toEntity(companyRequest);
+        CompanyResponse companyResponse = CompanyMapper.toResponse(companyRepository.save(company));
+        EmployeeRequest employeeRequest = new EmployeeRequest(getEmployee(company));
+        Employee employee = EmployeeMapper.toEntity(employeeRequest);
+        EmployeeResponse employeeResponse = EmployeeMapper.toResponse(employeeRepository.save(employee));
 
-        mockMvc.perform(get("/companies/{id}", company.getId()))
+        companyResponse.setEmployeesCount(employeeRepository.findAllByCompanyId(companyResponse.getId()).size());
+
+
+        mockMvc.perform(get("/companies/{id}", companyResponse.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(company.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].id").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(employee.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(employee.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value(employee.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(employee.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(companyResponse.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(companyResponse.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees.length()").value(companyResponse.getEmployeesCount()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].id").value(employeeResponse.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(employeeResponse.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(employeeResponse.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value(employeeResponse.getGender()));
     }
 
     @Test
