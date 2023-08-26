@@ -30,7 +30,7 @@ public class CompanyRequest {
     }
 
     public CompanyRequest(Company company) {
-        this.name = company.getName();
+        this.name = company.getCompanyName();
     }
 
     public CompanyRequest(String name) {

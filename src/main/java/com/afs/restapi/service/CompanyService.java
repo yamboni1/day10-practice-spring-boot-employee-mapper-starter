@@ -41,7 +41,7 @@ public class CompanyService {
     public void update(Long id, Company company) {
         Company toBeUpdatedCompany = companyRepository.findById(id)
                 .orElseThrow(CompanyNotFoundException::new);
-        toBeUpdatedCompany.setName(company.getName());
+        toBeUpdatedCompany.setCompanyName(company.getCompanyName());
         companyRepository.save(toBeUpdatedCompany);
     }
 

@@ -8,7 +8,7 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String companyName;
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "companyId")
     private List<Employee> employees;
@@ -16,9 +16,9 @@ public class Company {
     public Company() {
     }
 
-    public Company(Long id, String name) {
+    public Company(Long id, String companyName) {
         this.id = id;
-        this.name = name;
+        this.companyName = companyName;
     }
 
     public Long getId() {
@@ -29,12 +29,12 @@ public class Company {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public List<Employee> getEmployees() {

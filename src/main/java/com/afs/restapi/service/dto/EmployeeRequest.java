@@ -19,7 +19,7 @@ public class EmployeeRequest {
 
     public EmployeeRequest(Employee employee) {
 
-        this.name = employee.getName();
+        this.name = employee.getEmployeeName();
         this.age = employee.getAge();
         this.gender = employee.getGender();
         this.salary = employee.getSalary();

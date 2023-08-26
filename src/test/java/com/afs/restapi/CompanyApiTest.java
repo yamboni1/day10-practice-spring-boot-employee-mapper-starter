@@ -51,7 +51,7 @@ class CompanyApiTest {
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(company.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(company.getName()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(company.getCompanyName()));
     }
 
     @Test
@@ -94,7 +94,7 @@ class CompanyApiTest {
         assertTrue(optionalCompany.isPresent());
         Company updatedCompany = optionalCompany.get();
         Assertions.assertEquals(companyResponse.getId(), updatedCompany.getId());
-        Assertions.assertEquals(companyUpdateRequest.getName(), updatedCompany.getName());
+        Assertions.assertEquals(companyUpdateRequest.getName(), updatedCompany.getCompanyName());
     }
 
     @Test
@@ -133,9 +133,9 @@ class CompanyApiTest {
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(oocl.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(oocl.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(oocl.getCompanyName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(thoughtworks.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(thoughtworks.getName()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(thoughtworks.getCompanyName()));
     }
 
     @Test
@@ -146,8 +146,8 @@ class CompanyApiTest {
         mockMvc.perform(get("/companies/{companyId}/employees", oocl.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee.getEmployeeId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(employee.getEmployeeName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(employee.getAge()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(employee.getGender()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(employee.getSalary()));
@@ -155,7 +155,7 @@ class CompanyApiTest {
 
     private static Employee getEmployee(Company company) {
         Employee employee = new Employee();
-        employee.setName("Bob");
+        employee.setEmployeeName("Bob");
         employee.setAge(22);
         employee.setGender("Male");
         employee.setSalary(10000);
@@ -166,19 +166,19 @@ class CompanyApiTest {
 
     private static Company getCompanyOOCL() {
         Company company = new Company();
-        company.setName("OOCL");
+        company.setCompanyName("OOCL");
         return company;
     }
 
     private static Company getCompanyThoughtWorks() {
         Company company = new Company();
-        company.setName("Thoughtworks");
+        company.setCompanyName("Thoughtworks");
         return company;
     }
 
     private static Company getCompanyGoogle() {
         Company company = new Company();
-        company.setName("Google");
+        company.setCompanyName("Google");
         return company;
     }
 }

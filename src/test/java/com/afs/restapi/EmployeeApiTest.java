@@ -42,8 +42,8 @@ class EmployeeApiTest {
         mockMvc.perform(get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getEmployeeId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getEmployeeName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(bob.getAge()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(bob.getGender()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(bob.getSalary()));
@@ -57,8 +57,8 @@ class EmployeeApiTest {
         mockMvc.perform(get("/employees?gender={0}", "Male"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getEmployeeId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getEmployeeName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(bob.getAge()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(bob.getGender()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(bob.getSalary()));
@@ -97,8 +97,8 @@ class EmployeeApiTest {
         Employee updatedEmployee = optionalEmployee.get();
         Assertions.assertEquals(employeeUpdateRequest.getAge(), updatedEmployee.getAge());
         Assertions.assertEquals(employeeUpdateRequest.getSalary(), updatedEmployee.getSalary());
-        Assertions.assertEquals(employeeResponse.getId(), updatedEmployee.getId());
-        Assertions.assertEquals(employeeResponse.getName(), updatedEmployee.getName());
+        Assertions.assertEquals(employeeResponse.getId(), updatedEmployee.getEmployeeId());
+        Assertions.assertEquals(employeeResponse.getName(), updatedEmployee.getEmployeeName());
         Assertions.assertEquals(employeeResponse.getGender(), updatedEmployee.getGender());
     }
 
@@ -127,13 +127,13 @@ class EmployeeApiTest {
                         .param("pageSize", "2"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(bob.getEmployeeId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(bob.getEmployeeName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(bob.getAge()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(bob.getGender()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(bob.getSalary()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(susan.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(susan.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(susan.getEmployeeId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(susan.getEmployeeName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(susan.getAge()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value(susan.getGender()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(susan.getSalary()));
@@ -143,7 +143,7 @@ class EmployeeApiTest {
     void should_delete_employee_by_id() throws Exception {
         Employee employee = employeeRepository.save(getEmployeeBob());
 
-        mockMvc.perform(delete("/employees/{id}", employee.getId()))
+        mockMvc.perform(delete("/employees/{id}", employee.getEmployeeId()))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
         assertTrue(employeeRepository.findById(1L).isEmpty());
@@ -151,7 +151,7 @@ class EmployeeApiTest {
 
     private static Employee getEmployeeBob() {
         Employee employee = new Employee();
-        employee.setName("Bob");
+        employee.setEmployeeName("Bob");
         employee.setAge(22);
         employee.setGender("Male");
         employee.setSalary(10000);
@@ -160,7 +160,7 @@ class EmployeeApiTest {
 
     private static Employee getEmployeeSusan() {
         Employee employee = new Employee();
-        employee.setName("Susan");
+        employee.setEmployeeName("Susan");
         employee.setAge(23);
         employee.setGender("Female");
         employee.setSalary(11000);
@@ -169,7 +169,7 @@ class EmployeeApiTest {
 
     private static Employee getEmployeeLily() {
         Employee employee = new Employee();
-        employee.setName("Lily");
+        employee.setEmployeeName("Lily");
         employee.setAge(24);
         employee.setGender("Female");
         employee.setSalary(12000);
