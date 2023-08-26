@@ -12,7 +12,13 @@ public class EmployeeRequest {
 
     private Long companyId;
 
-    public EmployeeRequest(){
+    public EmployeeRequest(Employee employee){
+
+        this.name = employee.getName();
+        this.age = employee.getAge();
+        this.gender = employee.getGender();
+        this.salary = employee.getSalary();
+        this.companyId = employee.getCompanyId();
 
     }
     public EmployeeRequest(String name, Integer age, String gender, Integer salary, Long companyId) {
