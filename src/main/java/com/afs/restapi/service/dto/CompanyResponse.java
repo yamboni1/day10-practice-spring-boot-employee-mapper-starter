@@ -7,7 +7,6 @@ public class CompanyResponse {
     private Integer employeesCount;
 
 
-
     public Long getId() {
         return id;
     }
@@ -31,7 +30,8 @@ public class CompanyResponse {
     public void setEmployeesCount(Integer employeesCount) {
         this.employeesCount = employeesCount;
     }
-    public CompanyResponse(){
+
+    public CompanyResponse() {
 
     }
 

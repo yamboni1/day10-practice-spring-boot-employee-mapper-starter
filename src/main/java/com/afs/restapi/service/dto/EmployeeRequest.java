@@ -13,11 +13,11 @@ public class EmployeeRequest {
 
     private Long companyId;
 
-    public EmployeeRequest(){
+    public EmployeeRequest() {
 
     }
 
-    public EmployeeRequest(Employee employee){
+    public EmployeeRequest(Employee employee) {
 
         this.name = employee.getName();
         this.age = employee.getAge();
@@ -26,6 +26,7 @@ public class EmployeeRequest {
         this.companyId = employee.getCompanyId();
 
     }
+
     public EmployeeRequest(String name, Integer age, String gender, Integer salary, Long companyId) {
 
         this.name = name;
@@ -34,6 +35,7 @@ public class EmployeeRequest {
         this.salary = salary;
         this.companyId = companyId;
     }
+
     public EmployeeRequest(Long id, String name, Integer age, String gender, Integer salary, Long companyId) {
         this.name = name;
         this.id = id;
@@ -59,6 +61,7 @@ public class EmployeeRequest {
     public Integer getSalary() {
         return salary;
     }
+
     public void setSalary(Integer salary) {
         this.salary = salary;
     }
@@ -66,6 +69,7 @@ public class EmployeeRequest {
     public Long getCompanyId() {
         return companyId;
     }
+
     public Long getId() {
         return id;
     }
@@ -85,7 +89,6 @@ public class EmployeeRequest {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
 
 
     public void setCompanyId(Long companyId) {

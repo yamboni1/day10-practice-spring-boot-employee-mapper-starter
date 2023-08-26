@@ -39,7 +39,8 @@ public class EmployeeResponse {
     public void setGender(String gender) {
         this.gender = gender;
     }
-    public EmployeeResponse(){
+
+    public EmployeeResponse() {
 
     }
 

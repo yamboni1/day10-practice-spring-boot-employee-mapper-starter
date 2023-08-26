@@ -10,7 +10,7 @@ public class Company {
     private Long id;
     private String name;
     @OneToMany(orphanRemoval = true)
-    @JoinColumn( name = "companyId")
+    @JoinColumn(name = "companyId")
     private List<Employee> employees;
 
     public Company() {

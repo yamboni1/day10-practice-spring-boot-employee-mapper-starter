@@ -79,7 +79,7 @@ class CompanyApiTest {
 
     @Test
     void should_update_company_name() throws Exception {
-        CompanyRequest previousCompany =new CompanyRequest("Facebook");
+        CompanyRequest previousCompany = new CompanyRequest("Facebook");
         Company company = CompanyMapper.toEntity(previousCompany);
         CompanyResponse companyResponse = CompanyMapper.toResponse(companyRepository.save(company));
         CompanyRequest companyUpdateRequest = new CompanyRequest(companyResponse.getId(), "Meta");

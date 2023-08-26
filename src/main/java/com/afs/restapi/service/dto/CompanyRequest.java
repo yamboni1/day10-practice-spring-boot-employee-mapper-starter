@@ -14,7 +14,7 @@ public class CompanyRequest {
         this.companyId = companyId;
     }
 
-    public CompanyRequest( Long companyId, String name) {
+    public CompanyRequest(Long companyId, String name) {
         this.name = name;
         this.companyId = companyId;
     }
@@ -28,7 +28,8 @@ public class CompanyRequest {
     public String getName() {
         return name;
     }
-    public CompanyRequest(Company company){
+
+    public CompanyRequest(Company company) {
         this.name = company.getName();
     }
 
