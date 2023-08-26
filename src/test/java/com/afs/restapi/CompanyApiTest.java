@@ -90,10 +90,10 @@ class CompanyApiTest {
                         .content(updatedEmployeeJson))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
-        Optional<Company> optionalCompany = companyRepository.findById(previousCompany.getId());
+        Optional<Company> optionalCompany = companyRepository.findById(companyResponse.getId());
         assertTrue(optionalCompany.isPresent());
         Company updatedCompany = optionalCompany.get();
-        Assertions.assertEquals(previousCompany.getId(), updatedCompany.getId());
+        Assertions.assertEquals(companyResponse.getId(), updatedCompany.getId());
         Assertions.assertEquals(companyUpdateRequest.getName(), updatedCompany.getName());
     }
 
