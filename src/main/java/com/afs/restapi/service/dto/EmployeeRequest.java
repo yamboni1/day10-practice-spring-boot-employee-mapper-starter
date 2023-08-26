@@ -22,6 +22,15 @@ public class EmployeeRequest {
         this.salary = salary;
         this.companyId = companyId;
     }
+    public EmployeeRequest(Long id, String name, Integer age, String gender, Integer salary, Long companyId) {
+        this.name = name;
+        this.id = id;
+        this.age = age;
+        this.gender = gender;
+        this.salary = salary;
+        this.companyId = companyId;
+    }
+
 
 
     public String getName() {
