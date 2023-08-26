@@ -11,8 +11,11 @@ public class EmployeeRequest {
     private String gender;
     private Integer salary;
 
-
     private Long companyId;
+
+    public EmployeeRequest(){
+
+    }
 
     public EmployeeRequest(Employee employee){
 
@@ -41,7 +44,6 @@ public class EmployeeRequest {
     }
 
 
-
     public String getName() {
         return name;
     }
@@ -56,6 +58,9 @@ public class EmployeeRequest {
 
     public Integer getSalary() {
         return salary;
+    }
+    public void setSalary(Integer salary) {
+        this.salary = salary;
     }
 
     public Long getCompanyId() {
@@ -81,9 +86,7 @@ public class EmployeeRequest {
         this.gender = gender;
     }
 
-    public void setSalary(Integer salary) {
-        this.salary = salary;
-    }
+
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
