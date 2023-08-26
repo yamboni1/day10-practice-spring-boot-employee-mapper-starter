@@ -1,5 +1,7 @@
 package com.afs.restapi.service.dto;
 
+import com.afs.restapi.entity.Employee;
+
 public class EmployeeRequest {
     private String name;
 
